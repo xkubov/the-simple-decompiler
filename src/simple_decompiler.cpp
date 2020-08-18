@@ -64,7 +64,7 @@ void decompileWithRetDec(const RCore& core)
 		std::cout << "Decompilation was not successful" << std::endl;
 	}
 	else {
-		std::cout << retdecOutput << std::endl;
+		std::cout << retdecOutput << std::flush;
 	}
 }
 
