@@ -7,6 +7,8 @@
 #include <retdec/retdec.h>
 #include <retdec/config/config.h>
 
+#include "r2cgen.h"
+
 /// Plugin activation sequence.
 #define CMD "pdq"
 
@@ -66,6 +68,27 @@ void decompileWithRetDec(const RCore& core)
 	}
 }
 
+void decompileWithRetDecAnnotated(const RCore& core)
+{
+	auto config = loadDefaultConfig();
+
+	config.parameters.setInputFile(core.file->binb.bin->file);
+	config.parameters.setOutputFormat("json");
+	config.parameters.setIsVerboseOutput(false);
+	config.parameters.selectedRanges.insert(currentAddressRange(core));
+
+	std::string retdecOutput;
+	if (retdec::decompile(config, &retdecOutput)) {
+		std::cout << "Decompilation was not successful" << std::endl;
+		return;
+	}
+
+	retdec::r2plugin::R2CGenerator outgen;
+	auto rcode = outgen.generateOutput(retdecOutput);
+
+	r_core_annotated_code_print(rcode, nullptr);
+}
+
 /**
  * R2 console registration method. This method is called
  * after each command typed into r2. If the function wants
@@ -84,7 +107,8 @@ static int callback(void *user, const char* input)
 		return false;
 
 	try {
-		decompileWithRetDec(*core);
+		// decompileWithRetDec(*core);
+		decompileWithRetDecAnnotated(*core);
 	}
 	catch (const std::exception& e) {
 		std::cout << "error: " << e.what() << std::endl;

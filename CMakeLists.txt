@@ -25,7 +25,11 @@ endif()
 
 find_package(retdec 4.0 REQUIRED COMPONENTS retdec config)
 
-add_library(simple_decompiler SHARED src/simple_decompiler.cpp)
+add_library(simple_decompiler SHARED
+	src/simple_decompiler.cpp
+	src/r2cgen.cpp
+)
+
 target_link_libraries(simple_decompiler
 	retdec::retdec
 	retdec::config
