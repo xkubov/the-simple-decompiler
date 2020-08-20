@@ -86,7 +86,19 @@ void decompileWithRetDecAnnotated(const RCore& core)
 	retdec::r2plugin::R2CGenerator outgen;
 	auto rcode = outgen.generateOutput(retdecOutput);
 
+	// Prints colored.
 	r_core_annotated_code_print(rcode, nullptr);
+
+	// Prints colored with offsets.
+	// RVector *offsets = r_annotated_code_line_offsets(rcode);
+	// r_core_annotated_code_print(rcode, offsets);
+	// r_vector_free(offsets);
+
+	// Prints as comments.
+	// r_core_annotated_code_print_comment_cmds(rcode);
+
+	// Prints Json with annotations.
+	//r_core_annotated_code_print_json(rcode);
 }
 
 /**
@@ -122,8 +134,8 @@ RCorePlugin r_core_plugin_retdec = {
 	/* .name = */ "simple-decompiler",
 	/* .desc = */ "Simple decompiler example.",
 	/* .license = */ "MIT",
-	/* .author = */ "Avast",
-	/* .version = */ "0.1",
+	/* .author = */ "xkubov",
+	/* .version = */ "0.0.1",
 	/* .call = */ callback,
 	/* .init = */ nullptr,
 	/* .fini = */ nullptr
